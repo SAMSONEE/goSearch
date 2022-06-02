@@ -1,0 +1,22 @@
+=============== May 31, 2022 (CST) ===============
+16:15:19.092757 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:15:19.209936 db@open opening
+16:15:19.210249 version@stat F·[] S·0B[] Sc·[]
+16:15:19.268848 db@janitor F·2 G·0
+16:15:19.268873 db@open done T·58.908389ms
+16:15:29.680792 memdb@flush N·28359 S·3MiB
+16:15:29.836226 memdb@flush created L0@3 N·28359 S·1MiB "\x00\x02r],v27386":"\xff\xe0\xcf\xfd,v20620"
+16:15:29.836261 version@stat F·[1] S·1MiB[1MiB] Sc·[0.25]
+16:15:30.148706 memdb@flush committed F·1 T·467.860359ms
+16:15:30.157938 journal@remove removed @1
+16:15:35.481926 memdb@flush N·13416 S·3MiB
+16:15:35.801890 memdb@flush created L0@5 N·13416 S·1MiB "\x00\x02r],v41680":"\xff\xe0\xcf\xfd,v36222"
+16:15:35.802540 version@stat F·[2] S·2MiB[2MiB] Sc·[0.50]
+16:15:36.284400 memdb@flush committed F·1 T·802.409596ms
+16:15:36.289685 journal@remove removed @2
+16:15:36.744008 table@compaction L0·2 -> L1·0 S·2MiB Q·42631
+16:15:37.259944 table@build created L1@6 N·6203 S·215KiB "\x00\x02r],v41680":"\xff\xe0\xcf\xfd,v36222"
+16:15:37.260490 version@stat F·[0 1] S·215KiB[0B 215KiB] Sc·[0.00 0.00]
+16:15:37.587145 table@compaction committed F-1 S-2MiB Ke·0 D·35572 T·843.116695ms
+16:15:37.588417 table@remove removed @5
+16:15:37.588552 table@remove removed @3
