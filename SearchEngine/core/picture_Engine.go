@@ -1,21 +1,25 @@
 /*
 *   Todo:
-*        1.得分
-*        2. 文档存储格式（id：JSON格式）
+*        1. 得分
+*        2. 初始化
+*        3. 文档存储格式（id：JSON格式）
 *
  */
 
 package core
 
 import (
-	 "SearchEngine/leveldb"
+	"SearchEngine/leveldb"
+	"SearchEngine/rank"
 	. "SearchEngine/trie"
 	"SearchEngine/utils"
 	"fmt"
+	movingaverage "github.com/RobinUS2/golang-moving-average"
 	"github.com/huichen/sego"
 	"log"
 	"sync"
 )
+
 
 
 type PictureEngine struct {
@@ -34,6 +38,10 @@ type PictureEngine struct {
 	stoptokens StopTokens
 	//分词器
 	segmenter sego.Segmenter
+
+	//BM25
+	bm25 *rank.BM25
+
 
 	//字典树索引
 	Tire *TrieTree
@@ -84,6 +92,30 @@ func (pe *PictureEngine) Init() {
 	//	}
 	//}
 
+	//初始化BM25 有点问题
+	//ma := movingaverage.New(math.MaxUint32)
+	//pa := &rank.BM25Parameter{
+	//	K1: 2.0,
+	//	B:  0.75,
+	//}
+	//pe.bm25 =  &rank.BM25{
+	//	Parameters: pa,
+	//	Total: 0,
+	//	Ma: ma,
+	//}
+
+	ma := movingaverage.New(60)
+	pa := &rank.BM25Parameter{
+			K1: 2.0,
+			B:  0.75,
+	}
+
+	pe.bm25 = &rank.BM25{
+		Parameters: pa,
+		Total: uint32(0),
+		Ma: ma,
+	}
+
 }
 
 func (pe *PictureEngine) SegmentCsv(filePath string){
@@ -115,6 +147,13 @@ func (pe *PictureEngine) SegmentCsv(filePath string){
 		}
 		//添加倒排索引 key->id
 		pe.numDocumentIsIndex++
+
+		//BM25
+		pe.bm25.Total++
+		pe.bm25.Ma.Add(float64(len(tokensmap)))
+
+
+
 		for word, _ := range tokensmap {
 			pe.AddIndexOfKeyId(word,pe.numDocumentIsIndex)
 
@@ -146,6 +185,9 @@ func (pe *PictureEngine) GetLeveldbId(id uint32) int {
 *   1.判断是否在字典树
 *	2.判断是否在索引里
 */
+
+// 序列化后的keyword ：id (uint32)
+
 func (pe *PictureEngine) AddIndexOfKeyId(keyword string, id uint32){
 	pe.Lock()
 
@@ -191,6 +233,9 @@ func (pe *PictureEngine) AddIndexOfKeyId(keyword string, id uint32){
 }
 
 //添加正排索引
+
+// id(uint32) ：keywords map[string] []int
+
 func (pe *PictureEngine) AddIndexOfIdKey(id uint32,keymap map[string] []int){
 
 	 pe.Lock()
@@ -211,6 +256,7 @@ func (pe *PictureEngine) AddIndexOfIdKey(id uint32,keymap map[string] []int){
 
 }
 
+// id (uint32) : Picture
 func (pe *PictureEngine) AddDocument(id uint32,picture *Picture){
 	 pe.Lock()
 	 defer pe.Unlock()
@@ -228,3 +274,27 @@ func (pe *PictureEngine) AddDocument(id uint32,picture *Picture){
 		}
 	}
 }
+
+//BM25
+//             IDF * TF * (k1 + 1)
+//BM25 = sum ----------------------------
+//            TF + k1 * (1 - b + b * D / L)
+//
+//                   总文档数目
+//IDF = log2( ------------------------  + 1 )
+//                出现该关键词的文档数目
+
+
+func (pe *PictureEngine) GetRank(keywords []string, words map[string] []int,fre []uint32)float32{
+	  IDF := pe.bm25.GetIDF(fre)
+	  return pe.bm25.GetScore(keywords,words,IDF)
+}
+
+
+
+
+
+
+
+
+
