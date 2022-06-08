@@ -3,6 +3,7 @@ module SearchEngine
 go 1.18
 
 require (
+	github.com/RobinUS2/golang-moving-average v1.0.0 // indirect
 	github.com/adamzy/cedar-go v0.0.0-20170805034717-80a9c64b256d // indirect
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/google/btree v1.0.1 // indirect

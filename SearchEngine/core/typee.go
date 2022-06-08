@@ -14,3 +14,25 @@ type Picture struct {
 	//文本内容
 	Picture_context     string
 }
+
+type Searchrequest struct {
+	QueryText		 string
+	KeyWords	 	[]string
+	HateWords	 	[]string
+}
+
+type Serachresult struct {
+	Time 			float32
+	Total 			int
+	PageCount		int				//总页数
+	Page 			int				//页码
+	Limit 			int				//页大小
+	Pictures		[]Picture	//存储信息
+	KeyWords		[]string		//高亮
+}
+
+type Score struct {
+	Id 	uint32
+	Score float32
+}
+

@@ -1,7 +1,8 @@
 package main
 
 import (
-	. "SearchEngine/trie"
+	"SearchEngine/core"
+	"SearchEngine/utils"
 	"fmt"
 )
 
@@ -197,34 +198,34 @@ import (
 //}
 
 
-//func main() {
-//	var pe core.PictureEngine
-//
-//	pe.Init()
-//
-//	filepath := "/home/wqk/GolandProjects/SearchEngine/test/data/wukong50k_release.csv"
-//
-//	pe.SegmentCsv(filepath)
-//
-//	keyword := "短袖"
-//	keyint := utils.StringToInt(keyword)
-//	k := utils.Uint32ToBytes(keyint)
-//
-//	ldb := pe.KeyMapId[pe.GetLeveldbId(keyint)]
-//
-//	fmt.Println(pe.Tire.Contains(keyword))
-//
-//	flag, _ := ldb.Has(k)
-//
-//	fmt.Println(flag)
-//
-//	if flag {
-//		ids := make([]uint32,0)
-//		buf, _ := ldb.Get(k)
-//		utils.Decoder(buf,&ids)
-//		fmt.Println(ids)
-//	}
-//}
+func main() {
+	var pe core.PictureEngine
+
+	pe.Init()
+
+	filepath := "/home/wqk/GolandProjects/SearchEngine/test/data/wukong50k_release.csv"
+
+	pe.SegmentCsv(filepath)
+
+	keyword := "短袖"
+	keyint := utils.StringToInt(keyword)
+	k := utils.Uint32ToBytes(keyint)
+
+	ldb := pe.KeyMapId[pe.GetLeveldbId(keyint)]
+
+	fmt.Println(pe.Tire.Contains(keyword))
+
+	flag, _ := ldb.Has(k)
+
+	fmt.Println(flag)
+
+	if flag {
+		ids := make([]uint32,0)
+		buf, _ := ldb.Get(k)
+		utils.Decoder(buf,&ids)
+		fmt.Println(ids)
+	}
+}
 
 
 //func main() {
@@ -244,29 +245,29 @@ import (
 
 // 序列化
 
-func main () {
-
-	tree := NewTrie()
-
-	word := "未全开"
-	word1 := "未来"
-	word2 := "未全亿"
-	word3 := "未来来来"
-	tree.InsertWord(word)
-	tree.InsertWord(word1)
-	tree.InsertWord(word2)
-	tree.InsertWord(word3)
-
-	fmt.Println(tree.Level)
-
-	filename := "/home/wqk/GolandProjects/SearchEngine/test/data/storetrie/st"
-
-	Write(tree,filename)
-
-	newtree := Read(filename)
-
-	Write(newtree,filename)
-}
+//func main () {
+//
+//	tree := NewTrie()
+//
+//	word := "未全开"
+//	word1 := "未来"
+//	word2 := "未全亿"
+//	word3 := "未来来来"
+//	tree.InsertWord(word)
+//	tree.InsertWord(word1)
+//	tree.InsertWord(word2)
+//	tree.InsertWord(word3)
+//
+//	fmt.Println(tree.Level)
+//
+//	filename := "/home/wqk/GolandProjects/SearchEngine/test/data/storetrie/st"
+//
+//	Write(tree,filename)
+//
+//	newtree := Read(filename)
+//
+//	Write(newtree,filename)
+//}
 
 
 //func main () {
@@ -278,5 +279,82 @@ func main () {
 //	}
 //
 //}
+
+
+//fastsort
+
+
+//func main(){
+//
+//
+//
+//}
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
