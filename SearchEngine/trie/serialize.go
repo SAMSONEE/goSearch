@@ -1,4 +1,4 @@
-package trie
+  package trie
 
 import (
 	"SearchEngine/utils"
@@ -18,7 +18,7 @@ func Serialize(node *trieNode, level rune,filename string)  {
 		data1 = append(data1,word)
 		tmpnode1 = append(tmpnode1,nxt)
 	}
-	fmt.Println(data1)
+	//fmt.Println(data1)
 	utils.Write(&data1, filename)
 
 	//叶子节点 id 孩子数 节点 是否是词|
@@ -41,7 +41,7 @@ func Serialize(node *trieNode, level rune,filename string)  {
 			}
 		}
 		if len(tmpnode1) > 0 {
-			fmt.Println(data)
+			//fmt.Println(data)
 			utils.Write(&data,fmt.Sprintf("%s%d",filename,i))
 		}
 	}

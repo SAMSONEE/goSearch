@@ -2,7 +2,6 @@ package test
 
 import (
 	"SearchEngine/core"
-	"SearchEngine/sorts"
 	"SearchEngine/utils"
 	"fmt"
 	"testing"
@@ -54,7 +53,7 @@ func TestInit(t *testing.T) {
 	//
 	//fmt.Println("********************")
 
-	fastsort := new(sorts.FastSort)
+	fastsort := new(core.FastSort)
 	Scs := make([]*core.Score,0)
 
 	for _, id := range ids {
