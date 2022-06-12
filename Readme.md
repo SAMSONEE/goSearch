@@ -24,4 +24,11 @@ mysql> CREATE TABLE IF NOT EXISTS `user`(
 运行需要配置[PictureEngine](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/core)和[router/api](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/router/api)
 已经持久化了部分数据，直接运行main.go即可（部分路径需要自行修改）
 
-
+# Todo
+- 自动定时持久化
+- 在线对数据进行索引
+- 添加Cookie
+- 分布式搜索与索引（RPC）
+- 支持相关搜索功能
+- 以图搜图
+- 分页展示搜索结果
