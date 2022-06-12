@@ -56,3 +56,17 @@ func(db *Leveldb) Delete(key []byte) error {
 func(db *Leveldb) Close()error {
 	return db.db.Close()
 }
+
+
+func Open(path string)(*Leveldb, error){
+	db ,err := leveldb.OpenFile(path, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return & Leveldb{
+		db,
+		path,
+	}, nil
+}

@@ -2,8 +2,6 @@ package main
 
 import (
 	"SearchEngine/core"
-	"SearchEngine/utils"
-	"fmt"
 )
 
 //func main() {
@@ -203,28 +201,15 @@ func main() {
 
 	pe.Init()
 
-	filepath := "/home/wqk/GolandProjects/SearchEngine/test/data/wukong50k_release.csv"
+	//pe.Debug()
+	//filepath := "/home/wqk/GolandProjects/SearchEngine/test/data/wukong50k_release.csv"
+	//
+	//pe.SegmentCsv(filepath)
 
-	pe.SegmentCsv(filepath)
+	//pe.Flush()
 
-	keyword := "短袖"
-	keyint := utils.StringToInt(keyword)
-	k := utils.Uint32ToBytes(keyint)
 
-	ldb := pe.KeyMapId[pe.GetLeveldbId(keyint)]
 
-	fmt.Println(pe.Tire.Contains(keyword))
-
-	flag, _ := ldb.Has(k)
-
-	fmt.Println(flag)
-
-	if flag {
-		ids := make([]uint32,0)
-		buf, _ := ldb.Get(k)
-		utils.Decoder(buf,&ids)
-		fmt.Println(ids)
-	}
 }
 
 

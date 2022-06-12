@@ -1,64 +1,34 @@
-# 搜索引擎项目设计文档
+# SearchEngine
+`SearchEngine`一个基于[悟空数据集](https://wukong-dataset.github.io/wukong-dataset/benchmark.html)的图文搜索引擎。
 
-## 1.项目目标与分工
+ - [基于中文词典树的高效索引和搜索](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/trie)
+ - 支持词典树的[持久化](https://github.com/MingweiGuo/Goland/blob/main/SearchEngine/trie/serialize.go)
+ - 支持中文分词（使用[sego分词包](https://github.com/huichen/sego)进行并发分词）
+ - 支持[BM25算法](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/rank)
+ - 支持搜索数据持久化（使用[leveldb](https://github.com/google/leveldb)进行索引存储）
+ - 支持用户登录注册搜索数据（使用[Gin框架](https://github.com/gin-gonic/gin)实现）
+ - 基于快排和二分法实现搜索结果[排序](https://github.com/MingweiGuo/Goland/blob/main/SearchEngine/core/sorts.go)
+# 运行
+## Mysql 配置
+需要一张表来存储用户信息
+```sql
+mysql> CREATE TABLE IF NOT EXISTS `user`( 
+      `user_id` INT UNSIGNED AUTO_INCREMENT,    
+      `user_name` VARCHAR(100) NOT NULL,   
+      `user_passowrd` VARCHAR(40) NOT NULL,     
+      PRIMARY KEY ( `user_id` ) );
+```
+具体细节在[mysql](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/router/mysql)
 
-### 1.1目标
+## main.go 
+运行需要配置[PictureEngine](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/core)和[router/api](https://github.com/MingweiGuo/Goland/tree/main/SearchEngine/router/api)
+已经持久化了部分数据，直接运行main.go即可（部分路径需要自行修改）
 
-> 初步目标：完成基础功能前80%(2022/5/14)
-
-
-
-### 1.2分工
-> 初步构想：纯文本存储&搜索、分页展示、关键词过滤、相关搜索每个部分各由两位组员协作完成，率先完成本组任务的小组可以继续加入其他的小组协作。由于搜索性能&结果关联度、关键词过滤部分均涉及搜索算法实现，与存储&搜索部分的关联较为紧密，我考虑将这几个部分并为一个4人小组，小组完成存储&搜索部分后接着协作完成关键词过滤，之后再进行搜索性能&结果关联度的优化。
-
-> 这样则一共有三个小组，每个小组在实现代码前先在这个文档里完成对应部分的设计文档，按照设计文档写代码，如果构想发生变化，则要及时更新设计文档，有助于其他组员了解你们那部分代码的api和实现方式，有利于我们后面的整合。(以下内容仅供参考)
-
-#### &nbsp;&nbsp;&nbsp;&nbsp;1.2.1 存储&搜索，关键词过滤
-1. 存储&搜索
-
-&nbsp;&nbsp;&nbsp;&nbsp;**输入**：给定一个数据集，输入一个或若干个需要搜索的字符串
-
-&nbsp;&nbsp;&nbsp;&nbsp;**输出**：数据集中，与所搜索字符串相关的内容的索引，按照关联性从高到低排序，由索引可以访问该索引指向的内容
-
-2. 关键词过滤
-&nbsp;&nbsp;&nbsp;&nbsp;**输入**：在搜索字符串前加减号前缀，表示搜索不存在该字符串的内容，e.g."-apple"
-
-&nbsp;&nbsp;&nbsp;&nbsp;**输出**：返回所有不包含过滤关键词的内容的索引，同时满足A输出要求，若不包含搜索字符串，即输入仅有过滤关键词，则返回索引可不排序，或按照除了关联性以外的准则排序。
-
-
-#### &nbsp;&nbsp;&nbsp;&nbsp;1.2.2 分页展示
-&nbsp;&nbsp;&nbsp;&nbsp;**输入**：已排好序的内容和索引(可当作是一个结构体或pair或map，具体实现要与第一小组联系)
-
-&nbsp;&nbsp;&nbsp;&nbsp;**输出**：分成若干页的索引和内容，未点击索引前每条索引下显示对应索引内的部分内容(这部分内容与所搜索内容相关，应由第一小组实现，本小组可将其当作是结构体中某一部分内容)
-
-
-#### &nbsp;&nbsp;&nbsp;&nbsp;1.2.3相关搜索
-&nbsp;&nbsp;&nbsp;&nbsp;**输入**：给定一个数据集，输入一个或若干个字符串
-
-&nbsp;&nbsp;&nbsp;&nbsp;**输出**：给出若干个在数据集里与所输入字符串关联性最高的一个或若干个字符串，可根据数据集和搜索记录推断(可能与第一小组搜索算法的设计有关，可联系询问)
-
----
-
-## 2.项目结构
-### 2.1类
-#### &nbsp;&nbsp;&nbsp;&nbsp;2.2.1存储&搜索，关键词过滤
-(类、函数的作用可在写文档时大致想好写一下，有助于各小组进一步分工，事先将任务拆分为一个个容易实现的函数也有助于完成任务)
-
-A.someClassA
-作用：实现对纯文本信息的存储
-变量：someVariableA, someVarialbeB
-函数：someMethodA, someMethodB
-
-B.
-
-#### &nbsp;&nbsp;&nbsp;&nbsp;2.2.2分页展示
-#### &nbsp;&nbsp;&nbsp;&nbsp;2.2.3相关搜索
-
----
-
-## 3.项目相关资料
-(项目二文档最底部的三条链接默认已读过，这里不再列出)
-
-GitHub团队协作：[图文详解如何利用Git+Github进行团队协作开发](https://zhuanlan.zhihu.com/p/23478654)
-
-搜索引擎原理：[北邮《网络搜索原理》课程 (2020)](https://www.bilibili.com/video/BV1zp4y1e7iN?share_source=copy_web)
+# Todo
+- 自动定时持久化
+- 在线对数据进行索引
+- 添加Cookie
+- 分布式搜索与索引（RPC）
+- 支持相关搜索功能
+- 以图搜图
+- 分页展示搜索结果
