@@ -32,3 +32,4 @@ mysql> CREATE TABLE IF NOT EXISTS `user`(
 - 支持相关搜索功能
 - 以图搜图
 - 分页展示搜索结果
+- 性能测试
